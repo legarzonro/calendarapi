@@ -1,0 +1,53 @@
+
+<p-button *ngIf="loginEnable" label="Login" (onClick)="logIn()"></p-button>
+<p-button style="margin: 10px" *ngIf="!loginEnable" label="Sign Out" (onClick)="singOut()"
+    styleClass="ui-button-danger"></p-button>
+<p-button style="margin: 10px" *ngIf="!loginEnable && !newEvent" label="Add new event" (onClick)="newEvent=true">
+</p-button>
+
+<div *ngIf="newEvent">
+    <h2>New Event</h2>
+    <div>
+        from: <p-calendar [(ngModel)]="from" (onSelect)="formOnChange()" [showTime]="true"></p-calendar>
+        until: <p-calendar [(ngModel)]="until" (onSelect)="formOnChange()" [showTime]="true"></p-calendar>
+    </div>
+
+    <div style="margin: 9px;">
+        title: <input type="text" pInputText [(ngModel)]="title" (change)="formOnChange()" />
+        Description: <input type="text" pInputText [(ngModel)]="description" (change)="formOnChange()" />
+    </div>
+
+    <div style="margin: 9px;">
+        all day event?: <p-inputSwitch [(ngModel)]="allday" (onChange)="formOnChange()"></p-inputSwitch>
+    </div>
+
+    <p-button label="Create" (onClick)="insertEvent()" [disabled]="buttonDisabled"></p-button>
+
+
+</div>
+
+<div *ngIf="!loginEnable && !dataLoading">
+    <h2>week from {{this.timeMin.getDate()}}/{{this.timeMin.getMonth()+1}} to
+        {{this.timeMax.getDate()-1}}/{{this.timeMax.getMonth()+1}}</h2>
+    <table>
+        <tbody>
+            <tr>
+                <td>Domingo</td>
+                <td>Lunes</td>
+                <td>Martes</td>
+                <td>Miercoles</td>
+                <td>Jueves</td>
+                <td>Viernes</td>
+                <td>Sabado</td>
+            </tr>
+            <tr>
+                <td *ngFor="let dayEvents of events">
+
+                    <ul>
+                        <li *ngFor="let event of dayEvents">{{event.time}}:{{event.title}}</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
